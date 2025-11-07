@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Шинэ жилийн урилга 🎄</title>
+<title>🎄 Шинэ жилийн урилга</title>
 <style>
 /* ===== 🎄 ШИНЭ ЖИЛИЙН УРИЛГЫН CSS ===== */
 body {
@@ -14,7 +14,7 @@ body {
     radial-gradient(circle at 10% 10%, rgba(255,255,255,0.5), transparent 30%),
     linear-gradient(180deg, #b30000 0%, #3a0000 100%);
   font-family: "Segoe UI", sans-serif;
-  overflow: hidden; /* Scroll хаах */
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,21 +28,25 @@ body {
   100% { transform: translateY(100vh); opacity: 0; }
 }
 .snowflake {
-  position: absolute;
+  position: fixed;
   top: -10px;
   color: white;
   font-size: 1em;
   animation: snow linear infinite;
   opacity: 0.8;
+  z-index: 1;
 }
 
 /* ✉ Дугтуй */
 .envelope-wrap {
-  width: min(80vw, 700px);
-  height: min(60vh, 500px);
+  width: 90vw;
+  max-width: 450px;
+  height: auto;
+  aspect-ratio: 4 / 3;
   position: relative;
   cursor: pointer;
   perspective: 1000px;
+  z-index: 2;
 }
 
 .envelope {
@@ -56,9 +60,9 @@ body {
 .env-back, .env-front {
   position: absolute;
   inset: 0;
-  border-radius: 20px;
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.5);
 }
 
 .env-back {
@@ -67,7 +71,7 @@ body {
   align-items: center;
   justify-content: center;
   color: gold;
-  font-size: 26px;
+  font-size: clamp(18px, 4vw, 26px);
   letter-spacing: 1px;
   text-shadow: 0 0 8px rgba(255,255,255,0.6);
 }
@@ -82,28 +86,27 @@ body {
 /* 📜 Урилга */
 .paper {
   position: absolute;
-  left: 15px;
-  right: 15px;
-  top: 15px;
-  bottom: 15px;
+  left: 8px;
+  right: 8px;
+  top: 8px;
+  bottom: 8px;
   background: #fffdf7;
-  border-radius: 15px;
+  border-radius: 12px;
   color: #222;
-  padding: 28px;
+  padding: 18px;
   transform: translateY(80px);
   opacity: 0;
   transition: transform 1s ease, opacity 0.8s ease;
-  overflow: hidden;
-  text-align: left;
-  font-size: 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  overflow: hidden; /* бичиг гүйлгэхгүй */
+  text-align: center;
+  font-size: clamp(14px, 3vw, 16px);
+  line-height: 1.5;
 }
 
 .paper h2 {
   margin-top: 0;
   color: #008000;
+  font-size: clamp(18px, 5vw, 22px);
 }
 
 .envelope.open .env-front {
@@ -118,24 +121,26 @@ body {
 /* 🕯 Дугтуйн доорх заавар */
 .hint {
   text-align: center;
-  font-size: 18px;
+  font-size: clamp(14px, 4vw, 18px);
   color: #fffbe8;
   margin-top: 18px;
   animation: pulse 1.5s infinite;
+  z-index: 3;
 }
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
 }
 
-/* 🎆 Гялтганаа */
+/* ✨ Гялтганаа */
 .sparkle {
-  position: absolute;
+  position: fixed;
   background: gold;
   border-radius: 50%;
   width: 6px; height: 6px;
   opacity: 0.8;
   animation: sparkle 2s infinite;
+  z-index: 0;
 }
 @keyframes sparkle {
   0%,100% { transform: scale(1); opacity: 0; }
@@ -145,22 +150,27 @@ body {
 </head>
 <body>
 
-<div class="envelope-wrap" id="wrap">
-  <div class="envelope" id="envelope">
-    <div class="env-back"></div>
-    <div class="paper">
-      <h2>Эрхэм хүндэт Б.Чингүн танаа,</h2>
-      <p>Өнгөрч буй ондоо бидэнтэй хамтран ажиллаж, олон амжилт бүтээл, дурсамж дүүрэн мөчийг бүтээсэнд талархал илэрхийлье.🎅</p>
-      <p>Ирж буй 2026 ондоо бидний хамтын ажиллагаа улам өргөжиж, амжилт, хөгжил дэвшлээр дүүрэн байхыг ерөөе.</p>
-      <p>Та бүхнийг манай <b>“Шинэ жилийн баярын арга хэмжээ”</b>-нд хүрэлцэн ирэхийг урьж байна.🎄</p>
-      <p>Хүндэтгэсэн,<br><b>H&A Travel FILLC</b></p>
-    </div>
+<div class="envelope-wrap" onclick="toggleEnvelope()">
+  <div class="envelope">
+    <div class="env-back">🎁 Таны урилга</div>
     <div class="env-front"></div>
+    <div class="paper">
+      <h2 id="invitee-name">Хүндэт зочин</h2>
+      <p>
+        Та шинэ жилийн баярын урилгад хүрэлцэн ирэхийг урьж байна! 🎄<br><br>
+        📅 Огноо: 2025 оны 12-р сарын 25<br>
+        🕖 Цаг: 19:00<br>
+        📍 Байршил: Shangri-La Ballroom<br><br>
+        🎅 Хамтдаа аз жаргал, инээд хөөрөөр дүүрэн үдэшлэгийг тэмдэглэе!
+      </p>
+      <p><b>H&A Travel FILLC</b></p>
+    </div>
   </div>
-  <div class="hint">🎅 Дугтуй дээр дарна уу 🎁</div>
 </div>
 
-<!-- Snowflakes -->
+<div class="hint">👉 Дугтуйг дарж онгойлгоорой!</div>
+
+<!-- ❄️ Snowflakes -->
 <script>
 for (let i = 0; i < 40; i++) {
   const snow = document.createElement('div');
@@ -172,21 +182,30 @@ for (let i = 0; i < 40; i++) {
   snow.style.animationDelay = Math.random() * 5 + 's';
   document.body.appendChild(snow);
 }
-
-const wrap = document.getElementById('wrap');
-const env = document.getElementById('envelope');
-wrap.addEventListener('click', () => env.classList.toggle('open'));
 </script>
 
-<!-- Sparkles -->
+<!-- ✨ Sparkles -->
 <script>
-for(let i=0;i<20;i++){
-  const s=document.createElement('div');
-  s.className='sparkle';
-  s.style.left=Math.random()*100+'%';
-  s.style.top=Math.random()*100+'%';
-  s.style.animationDelay=(Math.random()*2)+'s';
+for(let i = 0; i < 25; i++){
+  const s = document.createElement('div');
+  s.className = 'sparkle';
+  s.style.left = Math.random() * 100 + '%';
+  s.style.top = Math.random() * 100 + '%';
+  s.style.animationDelay = (Math.random() * 2) + 's';
   document.body.appendChild(s);
+}
+</script>
+
+<!-- 💌 Envelope interaction -->
+<script>
+const params = new URLSearchParams(window.location.search);
+const name = params.get('name');
+if (name) {
+  document.getElementById('invitee-name').textContent = `Эрхэм ${name} танаа,`;
+}
+
+function toggleEnvelope() {
+  document.querySelector('.envelope').classList.toggle('open');
 }
 </script>
 
